@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class Conf_E_Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull

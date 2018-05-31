@@ -24,7 +24,7 @@ import javax.persistence.Table;
 public class Encargado_Bodega {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
     @ManyToOne

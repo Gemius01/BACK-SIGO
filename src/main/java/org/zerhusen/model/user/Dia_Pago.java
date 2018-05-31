@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.Range;
 public class Dia_Pago {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
     @NotNull

@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Bodega {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne

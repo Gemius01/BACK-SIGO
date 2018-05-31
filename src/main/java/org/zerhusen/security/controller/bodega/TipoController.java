@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import java.text.ParseException;
 import java.util.Optional;
+import javax.inject.Inject;
 import javax.swing.JOptionPane;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -36,6 +37,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 @RestController
 public class TipoController {
 
+    
+    @Autowired
+    private TipoRepository repository;
+    
     @PostConstruct
     public void init() throws ParseException {
         if (repository.findAll().isEmpty() == true) {
@@ -43,9 +48,6 @@ public class TipoController {
             repository.save(new Tipo("Insumo"));
         }
     }
-    
-    @Autowired
-    private TipoRepository repository;
 
     // Petición GET (Mostrar Todos)
     @CrossOrigin

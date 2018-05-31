@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Detalle_Marca{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
     @ManyToOne

@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.Range;
 public class Detalle_Adquisicion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull

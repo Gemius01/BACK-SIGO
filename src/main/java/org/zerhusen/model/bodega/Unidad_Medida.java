@@ -27,7 +27,7 @@ public class Unidad_Medida {
     //Autogenera ID
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull

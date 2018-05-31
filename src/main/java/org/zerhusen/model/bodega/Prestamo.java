@@ -34,7 +34,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Prestamo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private Date fecha;

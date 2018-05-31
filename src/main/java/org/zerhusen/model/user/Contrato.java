@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.Range;
 public class Contrato {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
