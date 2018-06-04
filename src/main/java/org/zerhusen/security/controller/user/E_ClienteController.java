@@ -11,6 +11,7 @@ import org.zerhusen.model.security.ValiRut;
 import org.zerhusen.security.repository.user.E_ClienteRepository;
 import java.util.Collection;
 import java.util.Optional;
+import static java.util.Optional.empty;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,8 +62,9 @@ public class E_ClienteController {
         JsonObject in_ext = new JsonObject();
         JsonObject object = new JsonObject();
         JsonObject in_rut = new JsonObject();
-        
-         if (repository.findById(e_cliente.getRut()) != null) {
+        System.out.println(e_cliente.getRut());
+        System.out.println(repository.findById(e_cliente.getRut()));
+         if (repository.findById(e_cliente.getRut()).isPresent()) {
             in_ext.addProperty("defaultMessage", "Este Rut ya Existe");
             String json_ext = in_ext.toString();
             return json_ext;

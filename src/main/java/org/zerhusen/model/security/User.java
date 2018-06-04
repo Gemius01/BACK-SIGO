@@ -14,12 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.zerhusen.model.user.Funcionario;
 
 @Entity
 @Table(name = "USER")
@@ -40,6 +42,10 @@ public class User {
     @NotNull
     @Size(min = 4, max = 100)
     private String password;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_funcionario")
+    private Funcionario id_funcionario;
 
 //    @Column(name = "FIRSTNAME", length = 50)
 //    @NotNull
@@ -101,6 +107,16 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Funcionario getId_funcionario() {
+        return id_funcionario;
+    }
+
+    public void setId_funcionario(Funcionario id_funcionario) {
+        this.id_funcionario = id_funcionario;
+    }
+    
+    
 
 //    public String getFirstname() {
 //        return firstname;
