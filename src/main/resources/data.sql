@@ -40,6 +40,6 @@ INSERT INTO `modulo` (`id`, `nombre`) VALUES (NULL, 'Modulo1');
 
 INSERT INTO `seccion` (`id`, `nombre`, `id_modulo`) VALUES (NULL, 'seccion1', '1');
 
-INSERT INTO `authority` (`id`, `acceso`, `mantencion`, `name`, `tabla_main`, `id_seccion`) VALUES ('1', 'asd', b'0', 'ROLE_ADMIN', 'asddd', '1')
+INSERT INTO `authority` (`id`, `acceso`, `mantencion`, `name`, `tabla_main`, `id_seccion`) VALUES ('1', 'asd', b'0', 'ROLE_ADMIN', 'asddd', '1');
 
 INSERT INTO `user_authority` (`user_id`, `authority_id`) VALUES ('1', '1');

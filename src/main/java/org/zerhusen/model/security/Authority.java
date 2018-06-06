@@ -1,5 +1,6 @@
 package org.zerhusen.model.security;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -35,6 +36,26 @@ public class Authority {
 
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
     private List<User> users;
+    
+    @JsonBackReference
+    @ManyToMany(mappedBy = "menu", fetch = FetchType.LAZY)
+    private List<User> menu;
+
+    public Authority(String name, Seccion id_seccion, String acceso, Boolean mantencion, String tabla_main) {
+        this.name = name;
+        this.id_seccion = id_seccion;
+        this.acceso = acceso;
+        this.mantencion = mantencion;
+        this.tabla_main = tabla_main;
+    }
+
+    public Authority() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    
+    
 
     public Long getId() {
         return id;

@@ -20,8 +20,11 @@ public final class JwtUserFactory {
 //                user.getFirstname(),
 //                user.getLastname(),
 //                user.getEmail(),
+               // user.getId_funcionario(),
+                
                 user.getPassword(),
                 mapToGrantedAuthorities(user.getAuthorities()),
+                mapMenu(user.getAuthorities()),
                 user.getEnabled(),
                 user.getLastPasswordResetDate()
         );
@@ -29,7 +32,15 @@ public final class JwtUserFactory {
 
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
         return authorities.stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getName()))
+                .map(authority -> new SimpleGrantedAuthority(authority.getId().toString()))
+                
+                .collect(Collectors.toList());
+    }
+    
+    private static List<Authority> mapMenu(List<Authority> authorities) {
+        return authorities.stream()
+                .map(authority -> new Authority(authority.getName(), authority.getId_seccion(), authority.getAcceso(), authority.getMantencion(), authority.getTabla_main()))
+                
                 .collect(Collectors.toList());
     }
 }

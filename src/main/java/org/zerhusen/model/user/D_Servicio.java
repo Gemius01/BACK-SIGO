@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
+import org.zerhusen.model.security.Authority;
 
 /**
  *
@@ -29,7 +30,7 @@ public class D_Servicio {
     
     @ManyToOne
     @JoinColumn(name = "id_funcion")
-    private Funcion id_funcion;
+    private Authority id_funcion;
     
     @NotNull
     @Range(min = 0, message = "Fuera del Rango de Limite")
@@ -42,7 +43,7 @@ public class D_Servicio {
     public D_Servicio() {
     }
 
-    public D_Servicio(Funcion id_funcion, long limit_reg, Servicio id_servicio) {
+    public D_Servicio(Authority id_funcion, long limit_reg, Servicio id_servicio) {
         super();
         this.id_funcion = id_funcion;
         this.limit_reg = limit_reg;
@@ -62,11 +63,11 @@ public class D_Servicio {
         this.id = id;
     }
 
-    public Funcion getId_funcion() {
+    public Authority getId_funcion() {
         return id_funcion;
     }
 
-    public void setId_funcion(Funcion id_funcion) {
+    public void setId_funcion(Authority id_funcion) {
         this.id_funcion = id_funcion;
     }
 

@@ -5,10 +5,12 @@
  */
 package org.zerhusen.security.controller.user;
 
+import java.util.ArrayList;
 import org.zerhusen.model.user.D_Servicio;
 import org.zerhusen.model.user.Modulo;
 import org.zerhusen.security.repository.user.D_ServicioRepository;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,8 @@ public class D_ServicioController {
         return repository.findById(id);
     }
     
+    //Buscar a un d_servicio
+
     // Petición POST(Agregar)
     @CrossOrigin
     @RequestMapping(value = "/user/d_servicio/", method = POST)
@@ -91,6 +95,14 @@ public class D_ServicioController {
     @CrossOrigin
     @RequestMapping(value = "/user/d_servicio/{id}/servicio", method = GET)
     public Collection<D_Servicio> getDetailByServicio(@PathVariable long id) {
-        return repository.DetailByServicio(id);
+        Collection<D_Servicio> detailS = repository.DetailByServicio(id);
+       
+        ArrayList lista = new ArrayList<>();
+        for (D_Servicio c : detailS){
+            c.getId_funcion().setUsers(null);
+            
+            lista.add(c);
+        }
+        return lista;
     }
 }

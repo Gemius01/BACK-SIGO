@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.zerhusen.model.security.Authority;
 import org.zerhusen.model.security.User;
 import org.zerhusen.security.JwtTokenUtil;
 import org.zerhusen.security.JwtUser;
@@ -50,6 +52,24 @@ public class UserRestController {
         String token = request.getHeader(tokenHeader).substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+        
+       for (Authority c : user.getMenu()){
+            System.out.println(c.getAcceso()); 
+        }
+        
+        return user;
+    }
+    
+    @CrossOrigin
+    @RequestMapping(value = "/user/roles", method = RequestMethod.GET)
+    public JwtUser getRoles(HttpServletRequest request) {
+        String token = request.getHeader(tokenHeader).substring(7);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+       for (GrantedAuthority c : user.getAuthorities()){
+            System.out.println(c.getAuthority()); 
+        }
+        
         return user;
     }
     
@@ -64,7 +84,6 @@ public class UserRestController {
             System.out.println(c.getUsername());
             
             JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(c.getUsername());
-            
             lista.add(user);
             
             
@@ -77,6 +96,7 @@ public class UserRestController {
     @RequestMapping(value = "/user/nuevo/", method = POST)
     @ResponseStatus(HttpStatus.CREATED)
     public User newUser(@Valid @RequestBody User user) {
+        
         return userRepository.save(user);
     }
     
