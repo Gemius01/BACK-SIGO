@@ -42,7 +42,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-
+        <s:global-method-security pre-post-annotations="enabled"/>
         <jjwt.version>0.9.0</jjwt.version>
         <jacoco.version>0.7.9</jacoco.version>
 
@@ -53,6 +53,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+    </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>

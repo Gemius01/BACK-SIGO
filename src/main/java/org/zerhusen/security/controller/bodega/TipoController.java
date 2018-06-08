@@ -51,7 +51,7 @@ public class TipoController {
 
     // Petición GET (Mostrar Todos)
     @CrossOrigin
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/bodega/tipo/", method = GET)
     public Collection<Tipo> getTipos() {
         return repository.listaTodo();

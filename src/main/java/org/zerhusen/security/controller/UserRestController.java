@@ -53,10 +53,7 @@ public class UserRestController {
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
         
-       for (Authority c : user.getMenu()){
-            System.out.println(c.getAcceso()); 
-        }
-        
+       
         return user;
     }
     

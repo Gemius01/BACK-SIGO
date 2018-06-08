@@ -113,4 +113,14 @@ public class Authority {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public List<User> getMenu() {
+        return menu;
+    }
+
+    public void setMenu(List<User> menu) {
+        this.menu = menu;
+    }
+    
+    
 }

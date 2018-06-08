@@ -110,7 +110,7 @@ public class AuthenticationRestControllerTest {
 
         Authority authority = new Authority();
         authority.setId(1L);
-        authority.setName("ROLE_ADMIN");
+        authority.setName(authority.getName());
         List<Authority> authorities = Arrays.asList(authority);
 
         User user = new User();

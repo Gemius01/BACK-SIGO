@@ -32,9 +32,9 @@ public final class JwtUserFactory {
 
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
         return authorities.stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getId().toString()))
-                
+                .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
+        
     }
     
     private static List<Authority> mapMenu(List<Authority> authorities) {

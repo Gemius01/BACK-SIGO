@@ -48,7 +48,7 @@ public class User {
     private String password;
     
     @ManyToOne
-    @JoinColumn(name = "id_funcionario")
+    @JoinColumn(name = "ID_FUNCIONARIO")
     private Funcionario id_funcionario;
 
 //    @Column(name = "FIRSTNAME", length = 50)
