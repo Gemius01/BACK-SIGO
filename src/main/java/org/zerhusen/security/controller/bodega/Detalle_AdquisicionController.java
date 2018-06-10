@@ -5,12 +5,7 @@
  */
 package org.zerhusen.security.controller.bodega;
 import org.zerhusen.model.bodega.Detalle_Adquisicion;
-import org.zerhusen.model.bodega.Prestamo;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
-import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +13,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerhusen.security.repository.bodega.Detalle_AdquisicionRepository;
-import java.util.ArrayList;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import org.zerhusen.model.security.UserData;
+import org.zerhusen.security.JwtTokenUtil;
+import org.zerhusen.security.JwtUser;
 
 /**
  *
@@ -42,12 +42,28 @@ public class Detalle_AdquisicionController {
 	}*/
     @Autowired
     private Detalle_AdquisicionRepository repository;
+    
+    UserData user = new UserData();  
+    
+    @Value("${jwt.header}")
+    public String tokenHeader;
+
+    @Autowired
+    public JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    @Qualifier("jwtUserDetailsService")
+    public UserDetailsService userDetailsService;
+    
+    @Autowired
+    public HttpServletRequest request;
 
     // Petición GET (Mostrar Todos)
     @CrossOrigin
     @RequestMapping(value = "/bodega/detalle_adquisicion/", method = GET)
     public Collection<Detalle_Adquisicion> getDetalle_Adquisiciones() {
-        return repository.findAll();
+        JwtUser eluse = user.getAuthenticatedUser(tokenHeader,jwtTokenUtil,userDetailsService,request);
+        return repository.listaTodo(eluse.getId());
     }
     
 //    Traer los detalle prestamo según id de prestamo

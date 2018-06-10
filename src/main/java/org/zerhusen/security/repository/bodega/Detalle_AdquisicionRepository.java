@@ -11,4 +11,10 @@ public interface Detalle_AdquisicionRepository extends JpaRepository<Detalle_Adq
     
     @Query(value = "select * from detalle_adquisicion where id_orden_compra = ?1", nativeQuery = true)
     List<Detalle_Adquisicion> adquisicionDetail(long id);
+    
+    @Query(value = "select * from detalle_adquisicion where id_orden_compra= any "
+            + "(select id from orden_compra where id_bodega = any "
+            + "(select id from bodega where id = 1 and id_e_cliente = "
+            + "(SELECT e_cliente.rut FROM user, e_cliente WHERE user.id = ?1)))", nativeQuery = true)
+    List<Detalle_Adquisicion> listaTodo(long id);
 }

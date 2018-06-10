@@ -14,10 +14,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +32,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.zerhusen.model.security.UserData;
+import org.zerhusen.security.JwtTokenUtil;
+import org.zerhusen.security.JwtUser;
 
 /**
  *
@@ -46,12 +53,28 @@ public class CotizacionController {
 	}*/
     @Autowired
     private CotizacionRepository repository;
+    
+    UserData user = new UserData();  
+    
+    @Value("${jwt.header}")
+    public String tokenHeader;
+
+    @Autowired
+    public JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    @Qualifier("jwtUserDetailsService")
+    public UserDetailsService userDetailsService;
+    
+    @Autowired
+    public HttpServletRequest request;
 
     // Petición GET (Mostrar Todos)
     @CrossOrigin
     @RequestMapping(value = "/bodega/cotizacion/", method = GET)
     public Collection<Cotizacion> getCotizaciones() {
-        return repository.listaTodo();
+        JwtUser eluse = user.getAuthenticatedUser(tokenHeader,jwtTokenUtil,userDetailsService,request);
+        return repository.listaTodo(eluse.getId());
     }
 
     //Buscar a una Cotizacion

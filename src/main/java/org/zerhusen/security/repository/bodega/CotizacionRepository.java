@@ -9,8 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 //Interfaz de la base de datos con el controllador Cotizacion
 public interface CotizacionRepository extends JpaRepository<Cotizacion, Long>{
 	
-    @Query(value = "select * from Cotizacion where rut_proveedor <> '11111111-1' ORDER BY `cotizacion`.`id` DESC", nativeQuery = true)
-    List<Cotizacion> listaTodo();
+    @Query(value = "select * from cotizacion where orden_compra = any "
+            + "(select id from orden_compra where id_bodega = any "
+            + "(select id from bodega where id = 1 and id_e_cliente = "
+            + "(SELECT e_cliente.rut FROM user, e_cliente WHERE user.id = 1?)))", nativeQuery = true)
+    List<Cotizacion> listaTodo(long id);
     
     @Query(value = "select * from cotizacion where orden_compra = ?1", nativeQuery = true)
     List<Cotizacion> CotizacionByOrden(long id);

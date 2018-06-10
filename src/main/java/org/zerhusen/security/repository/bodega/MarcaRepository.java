@@ -12,4 +12,9 @@ public interface MarcaRepository extends JpaRepository<Marca, Long>{
     @Query(value = "select * from marca where nombre <> 'MarDefault' ORDER BY `marca`.`id` DESC", nativeQuery = true)
     List<Marca> listaTodo();
     
+    @Query(value = "select * from marca where id = any "
+            + "(select id_marca from detalle_marca where id_e_cliente = any "
+            + "(select rut from e_cliente where rut = "
+            + "(SELECT e_cliente.rut FROM user, e_cliente WHERE user.id = ?1)))", nativeQuery = true)
+    List<Marca> listaTodoXEmpresa(long id);
 }

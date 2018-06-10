@@ -20,4 +20,9 @@ public interface CompraRepository extends JpaRepository<Compra, Long>{
     @Query(value = "select * from compra where num_factura = ?1", nativeQuery = true)
     Compra elNFactura(long num);
     
+    @Query(value = "select * from compra where id_orden_compra = any "
+            + "(select id from orden_compra where id_bodega = any "
+            + "(select id from bodega where id = 1 and id_e_cliente = "
+            + "(SELECT e_cliente.rut FROM user, e_cliente WHERE user.id = ?1)))", nativeQuery = true)
+    List<Compra> listaTodo(long id);
 }

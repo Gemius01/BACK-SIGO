@@ -14,4 +14,8 @@ public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
     @Query(value = "select * from prestamo where devolucion = ?1 order by fecha asc", nativeQuery = true)
     List<Prestamo> devolucionBool(int bool);
     
+    @Query(value = "select * from prestamo where id_bodega = "
+            + "(select id from bodega where id = 1 and id_e_cliente = "
+            + "(SELECT e_cliente.rut FROM user, e_cliente WHERE user.id = 1?))", nativeQuery = true)
+    List<Prestamo> listaTodo(long id);
 }

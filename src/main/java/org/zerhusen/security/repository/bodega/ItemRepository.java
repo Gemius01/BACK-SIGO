@@ -13,8 +13,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     //@Query("select modelo from Item where id_subcategoria=(select id from Tipo where nombre='Default')")
     /*@Query(value = "select * from Item where nombre <> ?1", nativeQuery = true)
     List<Item> listaTodo(String algo);*/
-    @Query(value = "select * from Item where nombre <> 'Default' ORDER BY `item`.`id` DESC", nativeQuery = true)
-    List<Item> listaTodo();
+    @Query(value = "select * from item where id = any "
+            + "(select id_item from detalle_item where id_bodega = any"
+            + "(select id from bodega where id = 1 and id_e_cliente = "
+            + "(SELECT e_cliente.rut FROM user, e_cliente WHERE user.id = ?1)))", nativeQuery = true)
+    List<Item> listaTodo(long id);
 
     @Query(value = "select * from Item where id_subcategoria = "
             + "(select id from Sub_Categoria where id_categoria = "

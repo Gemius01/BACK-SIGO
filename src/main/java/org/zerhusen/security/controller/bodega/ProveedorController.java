@@ -34,20 +34,32 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.zerhusen.model.security.UserData;
+import org.zerhusen.security.JwtTokenUtil;
+import org.zerhusen.security.JwtUser;
+import org.zerhusen.security.controller.UserRestController;
+import org.zerhusen.security.repository.UserRepository;
+import org.zerhusen.security.repository.user.E_ClienteRepository;
 
 /**
  *
@@ -59,21 +71,21 @@ public class ProveedorController {
     ValiRut valirut = new ValiRut();
     Gson gson = new Gson();
 
-    @Autowired
-    private PaisRepository Paisrepository;
-    @Autowired
-    private RegionRepository Regionrepository;
-    @Autowired
-    private CiudadRepository Ciudadrepository;
-    @Autowired
-    private GiroRepository Girorepository;
-    @Autowired
-    private Detalle_GiroRepository Detalle_Girorepository;
-    @Autowired
-    private CotizacionRepository Cotizacionrepository;
-    @Autowired
-    private Orden_CompraRepository Orden_Comprarepository;
+     UserData user = new UserData();  
+    
+    @Value("${jwt.header}")
+    public String tokenHeader;
 
+    @Autowired
+    public JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    @Qualifier("jwtUserDetailsService")
+    public UserDetailsService userDetailsService;
+    
+    @Autowired
+    public HttpServletRequest request;
+   
 //    @PostConstruct
 //    public void init() throws ParseException {
 //        if (repository.findAll().isEmpty() == true) {
@@ -111,15 +123,17 @@ public class ProveedorController {
 //            
 //        }
 //    }
-
     @Autowired
     private ProveedorRepository repository;
+    
+    
 
-    // Petición GET (Mostrar Todos)
+    // Petición GET (Mostrar Todos x empresa)
     @CrossOrigin
     @RequestMapping(value = "/bodega/proveedor/", method = GET)
     public Collection<Proveedor> getProveedors() {
-        return repository.listaTodo();
+        JwtUser eluse = user.getAuthenticatedUser(tokenHeader,jwtTokenUtil,userDetailsService,request);
+        return repository.listaTodo(eluse.getId());
     }
 
     //Buscar a un Proveedor

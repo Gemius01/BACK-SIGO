@@ -16,4 +16,9 @@ public interface MermaRepository extends JpaRepository<Merma, Long>{
     
     @Query(value = "select * from merma where fecha BETWEEN ?1 and ?2 ", nativeQuery = true)
     List<Merma> mermSnAnulada (String fi, String ff);
+    
+    @Query(value = "select * from merma where id_bodega = "
+            + "(select id from bodega where id = 1 and id_bodega = "
+            + "(SELECT e_cliente.rut FROM user, e_cliente WHERE user.id = 1))", nativeQuery = true)
+    List<Merma> listaTodo(long id);
 }

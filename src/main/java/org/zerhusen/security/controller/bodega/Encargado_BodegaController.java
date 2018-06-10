@@ -5,16 +5,18 @@
  */
 package org.zerhusen.security.controller.bodega;
 
-import org.zerhusen.model.bodega.Detalle_Marca;
 import org.zerhusen.model.bodega.Encargado_Bodega;
-import org.zerhusen.security.repository.bodega.Detalle_MarcaRepository;
 import org.zerhusen.security.repository.bodega.Encargado_BodegaRepository;
 import java.util.Collection;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +27,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.zerhusen.model.security.UserData;
+import org.zerhusen.security.JwtTokenUtil;
+import org.zerhusen.security.JwtUser;
 
 /**
  *
@@ -32,14 +37,31 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class Encargado_BodegaController {
+    
     @Autowired
     private Encargado_BodegaRepository repository;
+    
+    UserData user = new UserData();  
+    
+    @Value("${jwt.header}")
+    public String tokenHeader;
+
+    @Autowired
+    public JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    @Qualifier("jwtUserDetailsService")
+    public UserDetailsService userDetailsService;
+    
+    @Autowired
+    public HttpServletRequest request;
     
     // Petición GET (Mostrar Todos)
     @CrossOrigin
     @RequestMapping(value = "/bodega/encargado_bodega/", method = GET)
     public Collection<Encargado_Bodega> getEncargado_Bodega() {
-        return repository.findAll();
+        JwtUser eluse = user.getAuthenticatedUser(tokenHeader,jwtTokenUtil,userDetailsService,request);
+        return repository.lisaTodo(eluse.getId());
     }
     
     //Buscar a un Detalle Marca

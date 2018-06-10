@@ -25,12 +25,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +46,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.zerhusen.model.security.UserData;
+import org.zerhusen.security.JwtTokenUtil;
+import org.zerhusen.security.JwtUser;
 
 /**
  *
@@ -96,12 +103,28 @@ public class ItemController {
 
     @Autowired
     private ItemRepository repository;
+    
+    UserData user = new UserData();  
+    
+    @Value("${jwt.header}")
+    public String tokenHeader;
+
+    @Autowired
+    public JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    @Qualifier("jwtUserDetailsService")
+    public UserDetailsService userDetailsService;
+    
+    @Autowired
+    public HttpServletRequest request;
 
     // Petición GET (Mostrar Todos)
     @CrossOrigin
     @RequestMapping(value = "/bodega/item/", method = GET)
     public Collection<Item> getItems() {
-        return repository.listaTodo();
+        JwtUser eluse = user.getAuthenticatedUser(tokenHeader,jwtTokenUtil,userDetailsService,request);
+        return repository.listaTodo(eluse.getId());
     }
     
     //Reporte de Insumos con stock bajo
